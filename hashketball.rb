@@ -50,11 +50,7 @@ def team_colors(team_name)
 end
 
 def team_names
-  names = []
-  game_hash.each_pair do | team, data |
-    names << data[:team_name]
-  end
-  names
+  game_hash.collect { | team, data | data[:team_name] }
 end
 
 def player_numbers(team_name)
