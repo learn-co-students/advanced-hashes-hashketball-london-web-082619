@@ -77,54 +77,67 @@ end
         
 
 def big_shoe_rebounds
-  shoe_rebounds = [0, nil]
+  biggest_shoe = 0
+  most_rebounds = 0
+  
   game_hash.each_pair do | team, data |
     data[:players].each do | player |
-      if player[:shoe] > shoe_rebounds[0]
-        shoe_rebounds = [player[:shoe], player[:rebounds]]
+      if player[:shoe] > biggest_shoe
+        biggest_shoe = player[:shoe]
+        most_rebounds = player[:rebounds]
       end
     end
   end
-  shoe_rebounds[1]
+  most_rebounds
 end
     
 def most_points_scored
-  points_and_player = [0, nil]
+  most_points = 0 
+  scoring_player = nil
+  
   game_hash.each_pair do | team, data |
     data[:players].each do | player |
-      if player[:points] > points_and_player[0]
-        points_and_player = [player[:points], player[:name]]
+      if player[:points] > most_points
+        most_points = player[:points]
+        scoring_player = player[:name]
       end
     end
   end
-  points_and_player[1]
-end
-
-def winning_team
-  home_points = [point_calculator(:home), game_hash[:home][:team_name]]
-  away_points = [point_calculator(:away), game_hash[:away][:team_name]]
   
-  home_points[0] > away_points[0] ? home_points[1] : away_points[1]
+  scoring_player
 end
 
+#Resuable method to calculate the point total of any team
 def point_calculator(team)
   game_hash[team][:players].reduce(0) { | memo, player |
     memo += player[:points]
   }
 end
 
-def player_with_longest_name
-  longest_name = [0, nil]
+def winning_team
+  scoreboard = {
+    game_hash[:home][:team_name] => point_calculator(:home),
+    game_hash[:away][:team_name] => point_calculator(:away)
+  }
   
+  scoreboard.max_by { | k, v | v }.first
+end
+
+def player_with_longest_name
+  max_name_length = 0
+  player_with_name = nil
+    
   game_hash.each_pair do | team, data |
     data[:players].each do | player |
-      name_length = player[:name].length
-      if name_length > longest_name[0]
-        longest_name = [name_length, player[:name]]
+      length = player[:name].length
+      if length > max_name_length
+        max_name_length = length
+        player_with_name = player[:name]
       end
     end
   end
-  longest_name[1]
+  
+  player_with_name
 end
 
 def long_name_steals_a_ton?
@@ -135,5 +148,22 @@ def long_name_steals_a_ton?
       return false if player[:steals] > steals_to_beat
     end
   end
+  
   true 
 end
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
