@@ -115,8 +115,8 @@ end
 
 
 def num_points_scored(pl_name)
-  game_hash.each do |home_or_away, team|
-    team.each do |attributes, attribute_data|
+  game_hash.each do |home_or_away, team_data|
+    team_data.each do |attributes, attribute_data|
      if attributes == :players
          attribute_data.each do |individual_player|
           return individual_player[:points] if individual_player[:player_name] == pl_name
@@ -132,8 +132,8 @@ end
 
 
 def shoe_size(pl_name)
-  game_hash.each do |home_or_away, team|
-    team.each do |attributes, attribute_data|
+  game_hash.each do |home_or_away, team_data|
+    team_data.each do |attributes, attribute_data|
      if attributes == :players
          attribute_data.each do |individual_player|
            return individual_player[:shoe] if individual_player[:player_name] == pl_name
@@ -149,8 +149,8 @@ end
 
 
 def team_colors(team_name)
-  game_hash.each do |home_or_away, team|
-    return team[:colors] if team[:team_name] == team_name
+  game_hash.each do |home_or_away, team_data|
+    return team_data[:colors] if team_data[:team_name] == team_name
   end
 end
 
@@ -161,19 +161,24 @@ end
 
 
 def team_names
-  game_hash.collect do |home_or_away, team|
-    team[:team_name]
+  game_hash.collect do |home_or_away, team_data|
+    team_data[:team_name]
   end
 end
 #######Like .each, the collect method will yield each member of an Array to the block. But unlike .each (which just returns the original Array), .collect will collect the results in a new array and return that instead.
 #######
 
 
+
+
+
+
+
 def player_numbers(wanted_team_name)
-  shirt_numbers =[]
-  game_hash.each do |home_or_away,team|
-    if team[:team_name] == wanted_team_name
-      team.each do |attributes, attribute_data|
+  shirt_numbers = []
+  game_hash.each do |home_or_away,team_data|
+    if team_data[:team_name] == wanted_team_name
+      team_data.each do |attributes, attribute_data|
         if attributes == :players
           attribute_data.each do |individual_player_data|
             shirt_numbers << individual_player_data[:number]
@@ -185,12 +190,18 @@ def player_numbers(wanted_team_name)
   shirt_numbers
 end
 
+
+
+
+
+
+
 def player_stats(pl_name)
   player_stat_hash = {}
-  game_hash.each do |home_or_away, team|
-    team.each do |attributes, attribute_data|
-      if attributes == [:players] 
-        attributes.each do |player|
+  game_hash.each do |home_or_away, team_data|
+    team_data.each do |attributes, attribute_data|
+      if attributes == :players 
+        attribute_data.each do |player|
           if player[:player_name] == pl_name
             player_stat_hash = player
           end
@@ -198,35 +209,44 @@ def player_stats(pl_name)
       end
     end
   end
+  player_stat_hash.delete_if {|keys|keys == :player_name}
   player_stat_hash
+end
+          
+
+
+def big_shoe_rebounds
+  biggest_shoe = 0
+  num_rebounds = 0
+
+  game_hash.each do |home_or_away, team_data|
+    team_data[:players].each do |player|
+      if player[:shoe] > biggest_shoe
+        biggest_shoe = player[:shoe]
+        num_rebounds = player[:rebounds]
+      end
+    end
+  end
+
+  num_rebounds
 end
 
 
-
-
-
 def good_practices
-  game_hash.each do |location, team_data|
-    #are you ABSOLUTELY SURE what 'location' and 'team data' are? use binding.pry to find out!
+  game_hash.each do |home_or_away, team_data|
+    #are you ABSOLUTELY SURE what 'home_or_away and team_data' are? use binding.pry to find out!
     binding.pry
-    team_data.each do |attribute, data|
-      #are you ABSOLUTELY SURE what 'attribute' and 'team data' are? use binding.pry to find out!
+    team.each do |attributes, attribute_data|
+      #are you ABSOLUTELY SURE what 'attributes' and 'attribute_data' are? use binding.pry to find out!
       binding.pry
  
-      #what is 'data' at each loop throughout .each block? when will the following line of code work and when will it break?
-      data.each do |data_item|
+      #what is 'attribute_data' at each loop throughout .each block? when will the following line of code work and when will it break?
+      attribute_data.each do |individual_player|
           binding.pry
       end
     end
   end
 end
-
-
-
-
-
-
-
 
 
 
