@@ -1,7 +1,10 @@
+require "pry"
+
 def game_hash
   {
-        home: { team_name: 'Brooklyn Nets',
-            colors: ["Black", "White"],
+        home: { 
+            team_name: 'Brooklyn Nets',
+            colors: ['Black', 'White'],
             players: [
               { player_name: 'Alan Anderson',
                 number: 0,
@@ -53,8 +56,9 @@ def game_hash
       
       
       
-         away: { team_name: 'Charlotte Hornets',
-            colors: %w[Turquoise Purple],
+         away: { 
+            team_name: 'Charlotte Hornets',
+            colors: ['Turquoise', 'Purple'],
             players: [
               { player_name: 'Jeff Adrien',
                 number: 4,
@@ -104,6 +108,106 @@ def game_hash
             ] }
   }
 end
+
+
+
+
+
+
+def num_points_scored(pl_name)
+  game_hash.each do |home_or_away, team|
+    team.each do |attributes, attribute_data|
+     if attributes == :players
+         attribute_data.each do |individual_player|
+          return individual_player[:points] if individual_player[:player_name] == pl_name
+         end
+     end
+   end
+ end
+end
+
+
+
+
+
+
+def shoe_size(pl_name)
+  game_hash.each do |home_or_away, team|
+    team.each do |attributes, attribute_data|
+     if attributes == :players
+         attribute_data.each do |individual_player|
+           return individual_player[:shoe] if individual_player[:player_name] == pl_name
+         end
+     end
+    end
+  end
+end
+
+
+
+
+
+
+def team_colors(team_name)
+  game_hash.each do |home_or_away, team|
+    return team[:colors] if team[:team_name] == team_name
+  end
+end
+
+
+
+
+
+
+
+def team_names
+  game_hash.collect do |home_or_away, team|
+    team[:team_name]
+  end
+end
+#######Like .each, the collect method will yield each member of an Array to the block. But unlike .each (which just returns the original Array), .collect will collect the results in a new array and return that instead.
+#######
+
+
+def player_numbers(wanted_team_name)
+  shirt_numbers =[]
+  game_hash.each do |home_or_away,team|
+    if team[:team_name] == wanted_team_name
+      team.each do |attributes, attribute_data|
+        if attributes == :players
+          attribute_data.each do |individual_player_data|
+            shirt_numbers << individual_player_data[:number]
+          end
+        end
+      end
+    end
+  end
+  shirt_numbers
+end
+
+
+
+
+
+
+
+def good_practices
+  game_hash.each do |location, team_data|
+    #are you ABSOLUTELY SURE what 'location' and 'team data' are? use binding.pry to find out!
+    binding.pry
+    team_data.each do |attribute, data|
+      #are you ABSOLUTELY SURE what 'attribute' and 'team data' are? use binding.pry to find out!
+      binding.pry
+ 
+      #what is 'data' at each loop throughout .each block? when will the following line of code work and when will it break?
+      data.each do |data_item|
+          binding.pry
+      end
+    end
+  end
+end
+
+
 
 
 
