@@ -1,5 +1,5 @@
 def game_hash
-  nba_hash = {
+  {
         home: { team_name: 'Brooklyn Nets',
             colors: ["Black", "White"],
             players: [
@@ -103,7 +103,6 @@ def game_hash
                 slam_dunks: 12 }
             ] }
   }
-  return nba_hash
 end
 
 
