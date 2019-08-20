@@ -185,7 +185,18 @@ def player_numbers(wanted_team_name)
   shirt_numbers
 end
 
-
+def player_stats(pl_name)
+  player_stat_hash = {}
+  game_hash.each do |home_or_away, team|
+    team.each do |attributes, attribute_data|
+      if attributes == [:players] 
+        player_stat_hash << attributes
+      end
+    end
+  end
+  player_stat_hash
+end
+    
 
 
 
