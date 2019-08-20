@@ -190,13 +190,16 @@ def player_stats(pl_name)
   game_hash.each do |home_or_away, team|
     team.each do |attributes, attribute_data|
       if attributes == [:players] 
-        player_stat_hash << attributes
+        attributes.each do |player|
+          if player[:player_name] == pl_name
+            player_stat_hash = player
+          end
+        end
       end
     end
   end
   player_stat_hash
 end
-    
 
 
 
